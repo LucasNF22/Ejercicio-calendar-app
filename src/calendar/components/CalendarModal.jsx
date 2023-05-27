@@ -44,18 +44,34 @@ export const CalendarModal = () => {
             [changing]: event
         });
     };
-
-    const onSubmit = (e) => {
-        e.prevent.default
-
-        const difference = differenceInSeconds( formValues.end, formValues.start )
-        console.log(difference);
-    }
     
     const onCloseModal = () => {
         setIsOpen(false)
-        console.log('cerrando');
+
     };
+    
+    const onSubmit = (e) => {
+        e.preventDefault()
+
+        const difference = differenceInSeconds( formValues.end, formValues.start )
+        console.log(difference);
+        
+        if( isNaN( difference ) || difference <= 0 ) { 
+            console.log('error en las fechas');
+            return 
+        };
+
+        if ( formValues.title.length <= 0 ) return;
+
+        console.log(formValues);
+
+        //TODO
+        //cerrar modal
+        //remover errores en pantalla
+        
+
+    };
+    
 
     return (
         <Modal
@@ -68,7 +84,10 @@ export const CalendarModal = () => {
         >
             <h1> Nuevo evento </h1>
             <hr />
-            <form className="container">
+            <form 
+                className="container"
+                onSubmit={ onSubmit }
+            >
 
                 <div className="form-group mb-2">
                     <label>Fecha y hora inicio</label>
@@ -76,6 +95,7 @@ export const CalendarModal = () => {
                         selected={ formValues.start }
                         className="form-control"
                         onChange={ (event) => onDateChanged( event, 'start' ) }
+                        showTimeSelect
                         dateFormat="Pp"
                     />
                 </div>
@@ -87,6 +107,7 @@ export const CalendarModal = () => {
                         selected={ formValues.end }
                         className="form-control"
                         onChange={ (event) => onDateChanged( event, 'end' ) }
+                        showTimeSelect
                         dateFormat="Pp"
                     />
                 </div>
@@ -122,7 +143,6 @@ export const CalendarModal = () => {
                 <button
                     type="submit"
                     className="btn btn-outline-primary btn-block"
-                    onSubmit={ onSubmit }
                 >
                     <i className="far fa-save"></i>
                     <span> Guardar</span>
