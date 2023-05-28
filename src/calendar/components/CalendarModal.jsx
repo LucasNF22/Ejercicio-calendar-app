@@ -1,10 +1,16 @@
-import { addHours, differenceInSeconds } from "date-fns";
 import { useState } from "react";
+import { addHours, differenceInSeconds } from "date-fns";
+
+import Swal from "sweetalert2";
+import 'sweetalert2/dist/sweetalert2.min.css';
 
 import Modal from "react-modal";
-import DatePicker from "react-datepicker";
-
+import DatePicker, { registerLocale } from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import es from "date-fns/locale/es";
+import { useMemo } from "react";
+
+registerLocale( 'es', es );
 
 const customStyles = {
     content: {
@@ -21,7 +27,8 @@ Modal.setAppElement("#root");
 
 export const CalendarModal = () => {
 
-    const [isOpen, setIsOpen] = useState(true);
+    const [ isOpen, setIsOpen ] = useState(true);
+    const [ formSubmited, setFormSubmited ] = useState(false)
 
     const [formValues, setFormValues] = useState({
         title: 'Lucas',
@@ -30,6 +37,15 @@ export const CalendarModal = () => {
         end: addHours( new Date(), 2 )
 
     });
+
+    const titleClass = useMemo(() => {
+        if( !formSubmited ) return ;
+
+        return( formSubmited.title.length > 0 )
+            ? 'is-valid'
+            : 'is-invalid'
+
+    }, [formValues.title, formSubmited])
 
     const onInputChanged = ({ target }) => {
         setFormValues({
@@ -52,13 +68,13 @@ export const CalendarModal = () => {
     
     const onSubmit = (e) => {
         e.preventDefault()
+        setFormSubmited(true);
 
         const difference = differenceInSeconds( formValues.end, formValues.start )
         console.log(difference);
         
         if( isNaN( difference ) || difference <= 0 ) { 
-            console.log('error en las fechas');
-            return 
+            Swal.fire('Fechas incorrectas', 'Revisar datos ingresados', 'error')
         };
 
         if ( formValues.title.length <= 0 ) return;
@@ -97,6 +113,8 @@ export const CalendarModal = () => {
                         onChange={ (event) => onDateChanged( event, 'start' ) }
                         showTimeSelect
                         dateFormat="Pp"
+                        locale="es"
+                        timeCaption="Hora"
                     />
                 </div>
 
@@ -117,7 +135,7 @@ export const CalendarModal = () => {
                     <label>Titulo y notas</label>
                     <input 
                         type="text" 
-                        className="form-control"
+                        className={ `form-control ${ titleClass }` }
                         placeholder="Título del evento"
                         name="title"
                         autoComplete="off"
