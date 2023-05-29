@@ -41,7 +41,7 @@ export const CalendarModal = () => {
     const titleClass = useMemo(() => {
         if( !formSubmited ) return ;
 
-        return( formSubmited.title.length > 0 )
+        return( formValues.title.length > 0 )
             ? 'is-valid'
             : 'is-invalid'
 
@@ -109,7 +109,7 @@ export const CalendarModal = () => {
                     <label>Fecha y hora inicio</label>
                     <DatePicker 
                         selected={ formValues.start }
-                        className="form-control"
+                        className={ `form-control ` }
                         onChange={ (event) => onDateChanged( event, 'start' ) }
                         showTimeSelect
                         dateFormat="Pp"
@@ -123,10 +123,12 @@ export const CalendarModal = () => {
                     <DatePicker 
                         minDate={ formValues.start }
                         selected={ formValues.end }
-                        className="form-control"
+                        className={ `form-control ` }
                         onChange={ (event) => onDateChanged( event, 'end' ) }
                         showTimeSelect
+                        locale="es"
                         dateFormat="Pp"
+                        timeCaption="Hora"
                     />
                 </div>
 
