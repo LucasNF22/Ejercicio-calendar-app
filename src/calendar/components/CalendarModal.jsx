@@ -97,6 +97,7 @@ export const CalendarModal = () => {
         //TODO
         //cerrar modal
         //remover errores en pantalla
+        // resta por hacer
         
 
     };
