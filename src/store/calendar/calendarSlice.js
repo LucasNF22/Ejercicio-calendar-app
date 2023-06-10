@@ -44,7 +44,7 @@ export const calendarSlice = createSlice({
                 state.events = state.events.filter( event => event._id !==  state.activeEvent._id );
                 state.activeEvent = null;
             }
-        }
+        },
     },
 });
 

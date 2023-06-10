@@ -13,13 +13,11 @@ export const useUiStore = () => {
 
     const closeDateModal = () => { 
         dispatch( onCloseDateModal() );
-    }
+    };
 
     return{
-
         // Propiedades
         isDateModalOpen,
-
 
         // Métodos
         openDateModal,
