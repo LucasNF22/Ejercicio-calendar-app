@@ -87,12 +87,13 @@ export const CalendarModal = () => {
         // console.log(difference);
         
         if( isNaN( difference ) || difference <= 0 ) { 
-            Swal.fire('Fechas incorrectas', 'Revisar datos ingresados', 'error')
+            Swal.fire('Fechas incorrectas', 'Revisar datos ingresados', 'error');
+            return;
         };
 
         if ( formValues.title.length <= 0 ) return;
 
-        //console.log(formValues);
+        console.log( formValues );
 
         //TODO
         await startSavingEvent( formValues );
